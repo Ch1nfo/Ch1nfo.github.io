@@ -1,0 +1,56 @@
+<!DOCTYPE html><html lang="en" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>自然语言处理（NLP）——LSTM网络 | Hexo</title><link rel="icon" type="image/x-icon" href="/favicon.ico"><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"Enter here","blurHolder":"Search","noResult":"Data \"$0\" not found"},"code":{"codeInfo":"$0 - $1 lines","copy":"code.copy","copyFinish":"code.copyFinish","expand":"code.expand"}}</script><script src="//unpkg.com/mermaid@9.2.2/dist/mermaid.min.js"></script><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lightgallery.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lg-zoom.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lg-thumbnail.css"><link type="text/css" rel="stylesheet" href="/lib/fontawesome/css/all.min.css"><link rel="stylesheet" href="/css/arknights.css"><script>if (window.localStorage.getItem('theme-mode') === 'light')
+ document.documentElement.setAttribute('theme-mode', 'light')
+if (window.localStorage.getItem('theme-mode') === 'dark')
+ document.documentElement.setAttribute('theme-mode', 'dark')</script><style>@font-face {
+ font-family: Bender;
+ src: local('Bender'), url("/font/Bender.ttf"), url("/font/Bender.otf");
+}
+@font-face {
+ font-family: BenderLight;
+ src: local('BenderLight'), url("/font/BenderLight.ttf");
+}
+@font-face {
+ font-family: 'JetBrains Mono';
+ src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}</style><style>:root {
+  --dark-background: url('https://ak.hypergryph.com/assets/index/images/ak/pc/bk.jpg');
+  --light-background: url('/img/bk.jpg');
+}</style><meta name="generator" content="Hexo 6.3.0"></head><body><div class="loading" style="opacity: 0;"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><div class="navBtn"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><nav><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="Search" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>自然语言处理（NLP）——LSTM网络</h1><div id="post-info"><span>First Post: <div class="control"><time datetime="2021-04-15T13:54:02.000Z" id="date"> 2021-04-15</time></div></span><br><span>Last Update: <div class="control"><time datetime="2023-09-24T08:02:49.938Z" id="updated"> 2023-09-24</time></div></span></div></div><hr><div id="post-content"><h1 id="自然语言处理（NLP）——LSTM网络"><a href="#自然语言处理（NLP）——LSTM网络" class="headerlink" title="自然语言处理（NLP）——LSTM网络"></a>自然语言处理（NLP）——LSTM网络</h1><p>使用全连接神经网络来处理自然语言未免有些乏力，之前也可以看出准确率并不是很高，这时候就需要另一种专为NLP而生的网络——LSTM网络（长短时记忆网络）。</p>
+<p>想要学习这个网络，得先从RNN看起。循环神经网络（Recurrent Neural Network，RNN）是一种用于处理序列数据的神经网络。相比一般的神经网络来说，他能够处理序列变化的数据。它的激活函数多采用双曲正切函数tanh而不是relu，当然也可以使用relu。而为了每一步操作的统一性，在第一步时会手动添加一个共同输入a0，比如一个全0向量。</p>
+<p>而完全体的LSTM是比较复杂的</p>
+<p>![屏幕截图 2022-01-09 154012](C:\Users\Klsunset\Pictures\截图\屏幕截图 2022-01-09 154012.png)</p>
+<p>首先LSTM结构中的输出再次经过一个tanh函数，而原先的输出，就变成了一个叫做细胞状态（Ct）的东西，这个细胞状态就是LSTM能应对长依赖问题的关键，它就能让网络具有记忆和遗忘的效果。为了实现这个效果，LSTM使用了两个门来实现。第一个是遗忘门（forget gate）。使用一个sigmoid层，使其与上个细胞状态值相乘。当sigmoid为0时，就相当于把上个细胞值完全丢弃，即忘记。反之则全部记忆。而这个sigmoid层的输入则是本次词向量与上一次的输出合并的数据，这样就可以通过本次与之前的数据共同决定忘记多少之前的细胞值。第二个是更新门（update gate）。让本次的词向量与上一此的输出合并的数据在经过一个sigmoid层形成控制这个在之前标准RNN结构中用来更新的部分，即用来控制是否更新本次细胞状态值。这样就实现了记忆和遗忘的效果。而最后还有一个输出门，在标准RNN结构最后的输出也乘一个sigmoid层，这样在遇到重要词汇时产生强输出，使其难以遗忘，反之亦然。</p>
+<p>当然这只是对LSTM的及其粗略的讲解，这篇博客有着更加详细的讲解，还有LSTM变种结构比如GRU的介绍。</p>
+<p><a target="_blank" rel="noopener" href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">https://colah.github.io/posts/2015-08-Understanding-LSTMs/</a></p>
+<p>之后就是利用LSTM对之前的网购评论数据进行学习了。</p>
+<p>我在GitHub上找到了一个训练好的中文词向量</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Embedding/Chinese-Word-Vectors">https://github.com/Embedding/Chinese-Word-Vectors</a></p>
+<p>利用这个词向量来训练LSTM网络</p>
+<p>首先封装一个能读取这个词向量文件的chinese_vec.py</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">import os<br>import numpy as np<br>def load_word_vecs():<br>	embeddings_index = &#123;&#125;<br>	f = open(os.path.dirname(os.path.abspath(__file__))+&#x27;/sgns.target.word-word.dynwin5.thr10.neg5.dim300.iter5&#x27;,encoding=&#x27;utf8&#x27;)<br>	f.readline()#escape first line<br>	for line in f:<br>	    values = line.split()<br>	    word = values[0]<br>	    coefs = np.asarray(values[1:], dtype=&#x27;float32&#x27;)<br>	    embeddings_index[word] = coefs<br>	f.close()<br><br>	print(&#x27;Found %s word vectors.&#x27; % len(embeddings_index))<br>	return embeddings_index<br></code></pre></td></tr></table></figure>
+
+<p>然后调用它读取，在经过判断是否存在后写入一个空数组。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">word_vecs = chinese_vec.load_word_vecs()<br>embedding_matrix = np.zeros((vocalen, 300))<br><br>for word, i in word_index.items():<br>	embedding_vector = word_vecs.get(word)<br>	if embedding_vector is not None:<br>		embedding_matrix[i] = embedding_vector<br></code></pre></td></tr></table></figure>
+
+<p>然后就是构造LSTM，使用Keras可以十分简单</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs plaintext">model = Sequential()<br>model.add(Embedding(trainable=False, weights=[embedding_matrix], input_dim=vocalen, output_dim=300, input_length=maxlen))<br>model.add(LSTM(128, return_sequences=True))<br>model.add(LSTM(128))<br></code></pre></td></tr></table></figure>
+
+<p>之后就可以开始训练了。最后可以得到一个接近90%的准确率</p>
+<p>![屏幕截图 2022-01-09 160735](C:\Users\Klsunset\Pictures\截图\屏幕截图 2022-01-09 160735.png)</p>
+<div id="paginator"></div></div><div id="post-footer"><div id="pages" style="justify-content: flex-start"><div class="footer-link" style="width: 50%;text-align:right;border-right:1px #fe2 solid"><a href="/2021/04/15/%E9%9A%90%E8%97%8F%E5%B1%82%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">← Next 隐藏层与深度学习</a></div></div></div></div><div class="bottom-btn"><div><a class="i-top" id="to-top" onClick="scrolls.scrolltop();" title="To Top" style="opacity: 0; display: none;">∧ </a><a class="i-index" id="to-index" href="#toc-div" title="To Catalog">≡</a><a class="i-color" id="color-mode" onClick="colorMode.change()" title="Change Theme"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">John Doe</a></h1><div id="description"><p></p></div></div><div id="aside-block"><div id="toc-div"><h1>Catalog</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%EF%BC%88NLP%EF%BC%89%E2%80%94%E2%80%94LSTM%E7%BD%91%E7%BB%9C"><span class="toc-number">1.</span> <span class="toc-text">自然语言处理（NLP）——LSTM网络</span></a></li></ol></div></div><footer><nobr>Published with <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> Theme <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr> by <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/search.js"></script><script src="/js/arknights.js"></script><script src="//unpkg.com/lightgallery@2.7.1/lightgallery.min.js"></script><script src="//unpkg.com/lightgallery@2.7.1/plugins/zoom/lg-zoom.min.js"></script><script src="//unpkg.com/lightgallery@2.7.1/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="/js/pjax.js"></script><script class="pjax-js">reset= () => {document.querySelector('.lg-container')?.remove()
+lightGallery(document.getElementById('post-bg'), {
+  plugins: [lgZoom,lgThumbnail],
+  selector: '.item-img'})}</script><script>window.addEventListener("load",() => {pjax = new Pjax({
+ cacheBust: false,
+ selectors: ['title','article','#aside-block','.pjax-js'],
+ switches: {'article': Pjax.switches.sideBySide},
+ switchesOptions: {
+   'article': {
+     classNames: {
+       remove: "pjax-out",
+       add: "pjax-in"
+     }
+   }
+ }
+});
+document.addEventListener("pjax:complete", reset);reset()})</script></body></html>
